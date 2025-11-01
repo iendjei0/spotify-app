@@ -1,10 +1,16 @@
 import '../styles/login.css'
+import { getSpotifyLoginUrl } from '../api/spotify'
 
 function Login() {
-  const handleLogin = () => {
-    window.location.href = `${BACKEND_URL}/spotify/login`;
-  }
-  
+  async function handleLogin() {
+    try {
+      const url = await getSpotifyLoginUrl();
+      window.location.href = url;
+    } catch (err) {
+      console.error("Failed to start Spotify login:", err);
+    }
+  };
+
   return (
     <main className="app-container">
       <div className="card login-card">
@@ -13,7 +19,7 @@ function Login() {
         </button>
       </div>
     </main>
-  )
+  );
 }
 
 export default Login;

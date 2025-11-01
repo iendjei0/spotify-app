@@ -1,4 +1,19 @@
 
+export async function getSpotifyLoginUrl(): Promise<string> {
+  const res = await fetch(`${BACKEND_URL}/spotify/login`);
+
+  if (!res.ok) {
+    throw new Error(`Failed to get Spotify login URL: ${res.statusText}`);
+  }
+
+  const data = await res.json();
+  if (!data.url) {
+    throw new Error("Spotify login URL missing in response");
+  }
+
+  return data.url;
+}
+
 export interface SpotifyExchangeResponse {
   access_token: string;
   refresh_token?: string;

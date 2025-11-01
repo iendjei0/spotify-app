@@ -37,7 +37,7 @@ public class SpotifyController : ControllerBase
                            $"&redirect_uri={Uri.EscapeDataString(redirectUrl)}" +
                            $"&scope={Uri.EscapeDataString(scopes)}";
 
-        return Redirect(authorizeUrl);
+        return Ok(new { url = authorizeUrl });
     }
 
     public record CodeRequest(string Code);
