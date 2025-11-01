@@ -1,0 +1,25 @@
+.card {
+  width: 100%;
+  max-width: 940px;
+  background: var(--card-bg);
+  padding: 16px;
+  border-radius: 8px;
+  border: 1px solid var(--card-outline);
+}
+
+.login-card {
+  max-width: 380px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.primary-button {
+  padding: 8px 14px;
+  font-size: 16px;
+  border-radius: 6px;
+  border: none;
+  background: var(--accent);
+  color: var(--card-bg);
+  cursor: pointer;
+}

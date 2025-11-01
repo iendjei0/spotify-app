@@ -1,0 +1,75 @@
+.dashboard-card { 
+  max-width: 1000px; 
+}
+
+.dashboard-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.dashboard-content { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 20px; 
+}
+
+.top-section {
+  background: rgba(255,255,255,0.02);
+  padding: 14px;
+  border-radius: 6px;
+}
+
+.top-section h2 {
+  margin: 0 0 16px 0;
+  font-size: 18px;
+  color: var(--muted);
+}
+
+.artists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(140px,1fr));
+  gap: 12px;
+}
+
+.artist-card { 
+  display: flex; 
+  flex-direction: column; 
+  align-items: center; 
+  gap: 8px; 
+  text-align: center; 
+}
+
+.artist-card img { 
+  width: 110px; 
+  height: 110px; 
+  object-fit: cover; 
+  border-radius: 6px; 
+}
+
+.tracks-list { 
+  display: flex; 
+  flex-direction: column; 
+  gap: 10px; 
+}
+
+.track-item { 
+  display: flex; 
+  gap: 12px; 
+  align-items: center; 
+  padding: 8px; 
+  border-radius: 6px; 
+  background: rgba(255,255,255,0.01); 
+}
+
+.track-number { 
+  color: var(--muted); 
+  min-width: 24px; 
+}
+
+.track-info span { 
+  color: var(--muted); 
+  font-size: 13px; 
+}
