@@ -1,18 +1,20 @@
 import { useState } from "react";
 import "../styles/dashboard.css";
 import { getSpotifyStats, type Artist, type Song } from "../api/spotify";
+import SpotifyDumb from "../components/SpotifyDumb";
 
 function Dashboard() {
   const [topTracks, setTopTracks] = useState<Song[]>([]);
   const [topArtists, setTopArtists] = useState<Artist[]>([]);
-  const [loading, setLoading] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
+  const [isSpotifyDumb, setIsSpotifyDumb] = useState<boolean>(false);
 
   async function loadSpotifyData() {
     setLoading(true);
+    setIsSpotifyDumb(false);
 
     const token = JSON.parse(localStorage.getItem("spotify_token") || "null");
     if (!token) {
-      console.error("No Spotify token found");
       setLoading(false);
       return;
     }
@@ -21,8 +23,10 @@ function Dashboard() {
       const { tracks, artists } = await getSpotifyStats(token);
       setTopTracks(tracks);
       setTopArtists(artists);
-    } catch (error) {
-      console.error("Error fetching Spotify data:", error);
+    } catch (err: any) {
+      if (err.message === "403") {
+        setIsSpotifyDumb(true);
+      }
     } finally {
       setLoading(false);
     }
@@ -48,7 +52,7 @@ function Dashboard() {
             <div className="artists-grid">
               {topArtists.map((artist, i) => (
                 <div key={i} className="artist-card">
-                  <img src={artist.imageUrl}/>
+                  <img src={artist.imageUrl} alt={artist.name} />
                   <span>{artist.name}</span>
                 </div>
               ))}
@@ -70,6 +74,9 @@ function Dashboard() {
               ))}
             </div>
           </section>
+
+          {isSpotifyDumb && <SpotifyDumb/>}
+
         </div>
       </div>
     </main>

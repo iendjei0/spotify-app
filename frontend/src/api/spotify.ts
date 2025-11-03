@@ -49,7 +49,9 @@ export async function getTopTracks(token: string): Promise<Song[]> {
     headers: { Token: token },
   });
 
+  if (res.status === 403) throw new Error("403");
   if (!res.ok) throw new Error("Failed to fetch top tracks");
+
   return res.json();
 }
 
@@ -58,7 +60,9 @@ export async function getTopArtists(token: string): Promise<Artist[]> {
     headers: { Token: token },
   });
 
+  if (res.status === 403) throw new Error("403");
   if (!res.ok) throw new Error("Failed to fetch top artists");
+
   return res.json();
 }
 

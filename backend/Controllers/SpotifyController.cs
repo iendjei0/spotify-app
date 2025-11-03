@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using SpotifyApp.Config;
 using SpotifyApp.Services;
+using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
@@ -30,7 +31,7 @@ public class SpotifyController : ControllerBase
             return Problem(detail: "Missing Spotify client configuration (ClientId or FrontendUrl).");
         }
 
-        var scopes = "user-read-private user-read-email user-top-read";
+        var scopes = "user-top-read";
         var authorizeUrl = $"https://accounts.spotify.com/authorize" +
                            $"?client_id={Uri.EscapeDataString(clientId)}" +
                            $"&response_type=code" +
@@ -81,9 +82,19 @@ public class SpotifyController : ControllerBase
     {
         spotifyService.SetToken(token ?? "");
 
-        var response = await spotifyService.GetTopTracksAsync();
-
-        return Ok(response);
+        try
+        {
+            var response = await spotifyService.GetTopTracksAsync();
+            return Ok(response);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+        {
+            return StatusCode(403, "Spotify API access forbidden");
+        }
+        catch (HttpRequestException ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
     
     [HttpGet("top-artists")]
@@ -91,8 +102,18 @@ public class SpotifyController : ControllerBase
     {
         spotifyService.SetToken(token ?? "");
 
-        var response = await spotifyService.GetTopArtistsAsync();
-
-        return Ok(response);
+        try
+        {
+            var response = await spotifyService.GetTopArtistsAsync();
+            return Ok(response);
+        }
+        catch (HttpRequestException ex) when (ex.StatusCode == HttpStatusCode.Forbidden)
+        {
+            return StatusCode(403, "Spotify API access forbidden");
+        }
+        catch (HttpRequestException ex)
+        {
+            return StatusCode(500, ex.Message);
+        }
     }
 }
